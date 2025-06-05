@@ -4,13 +4,14 @@ export const registration = async (req, res) => {
   try {
     let user = await User.findOne({ email: req.body.email });
 
-    if (!user) {
+    if (user) {
       return res
-        .status(401)
-        .json({ message: "User doesn't exist", success: false });
+        .status(409)
+        .json({ message: "User already exist", success: false });
     }
 
-    await user.save();
+    let newUser = new User(req.body)
+    await newUser.save();
 
     res
       .status(201)

@@ -31,7 +31,8 @@ const Home = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       let data = await response.json()
-      console.log(data)
+      console.log(data.data)
+      setUser(data.data)
     } catch (error) {
       console.log("Internal server error", error);
     }
@@ -49,6 +50,7 @@ const Home = () => {
           <th style={thStyle}>Email</th>
           <th style={thStyle}>Age</th>
           <th style={thStyle}>Designation</th>
+          <th style={thStyle}>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -58,6 +60,7 @@ const Home = () => {
             <td style={tdStyle}>{user.email}</td>
             <td style={tdStyle}>{user.age}</td>
             <td style={tdStyle}>{user.designation}</td>
+            <td style={tdStyle}><button> Edit</button></td>
           </tr>
         ))}
       </tbody>
