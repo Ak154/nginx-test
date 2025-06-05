@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [users, setUser] = useState([]);
+  const navigate = useNavigate();
 
   const tableStyle = {
     width: "100%",
@@ -38,6 +40,12 @@ const Home = () => {
     }
   };
 
+  const handleEdit = async(id)=>{
+    let userData = users.filter((elem)=> elem._id===id)
+    console.log(userData)
+    navigate("/update",{state: userData})
+  }
+
   useEffect(() => {
     getUserData();
   }, []);
@@ -60,7 +68,7 @@ const Home = () => {
             <td style={tdStyle}>{user.email}</td>
             <td style={tdStyle}>{user.age}</td>
             <td style={tdStyle}>{user.designation}</td>
-            <td style={tdStyle}><button> Edit</button></td>
+            <td style={tdStyle}><button onClick={()=>handleEdit(user._id)}> Edit</button></td>
           </tr>
         ))}
       </tbody>

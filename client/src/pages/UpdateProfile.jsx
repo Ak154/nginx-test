@@ -1,12 +1,17 @@
 import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const RegistrationForm = () => {
+const UpdateProfile = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const user = location.state;
+
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    age: "",
-    designation: "",
+    name: user[0]?.name || "",
+    email: user[0]?.email || "",
+    age: user[0]?.age || "",
+    designation: user[0]?.designation || "",
   });
 
   const formStyle = {
@@ -52,34 +57,28 @@ const RegistrationForm = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:9000/api/user/registration",
+        "http://localhost:9000/api/user/update-user-by-id",
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
         }
       );
-      console.log(response);
-
-      console.log("Raw response:", response);
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const data = await response.json();
-      console.log("Login response:", data);
-
       // Reset form correctly
       setFormData({
         name: "",
         email: "",
-        password: "",
         age: "",
         designation: "",
       });
+      navigate("/");
     } catch (error) {
       console.log("Error in form submission:", error.message);
     }
@@ -87,7 +86,7 @@ const RegistrationForm = () => {
 
   return (
     <form onSubmit={handleSubmit} style={formStyle}>
-      <h2 style={{ textAlign: "center" }}>Sign Up</h2>
+      <h2 style={{ textAlign: "center" }}>Update Profile</h2>
 
       <label style={labelStyle}>Name</label>
       <input
@@ -100,7 +99,7 @@ const RegistrationForm = () => {
         required
       />
 
-      <label style={labelStyle}>Email</label>
+      {/* <label style={labelStyle}>Email</label>
       <input
         type="email"
         name="email"
@@ -109,18 +108,7 @@ const RegistrationForm = () => {
         style={inputStyle}
         placeholder="Enter your email"
         required
-      />
-
-      <label style={labelStyle}>Password</label>
-      <input
-        type="password"
-        name="password"
-        value={formData.password}
-        onChange={handleChange}
-        style={inputStyle}
-        placeholder="Enter your password"
-        required
-      />
+      /> */}
 
       <label style={labelStyle}>Age</label>
       <input
@@ -149,4 +137,4 @@ const RegistrationForm = () => {
   );
 };
 
-export default RegistrationForm;
+export default UpdateProfile;
