@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const RegistrationForm = () => {
+
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -80,6 +83,7 @@ const RegistrationForm = () => {
         age: "",
         designation: "",
       });
+      navigate("/")
     } catch (error) {
       console.log("Error in form submission:", error.message);
     }
